@@ -5,7 +5,7 @@
 # Konfigurasi
 CHANNEL_ID="UCVg6XW6LiG8y7ZP5l9nN3Rw"  # Muse Indonesia
 MAX_RESULTS=15
-VERSION="1.3.0"
+VERSION="1.3.1"
 REPO_URL="https://github.com/username/ryonime"
 RAW_URL="https://raw.githubusercontent.com/budi-imam-prasetyo/ryonime/master/ryonime.sh"
 SCRIPT_PATH=$(realpath "$0")
@@ -25,13 +25,13 @@ RESET="\033[0m"
 header() {
     clear
     echo -e "${PURPLE}╭──────────────────────────────────────────────────────╮"
-    echo -e "│${CYAN}          ______  ______  _   ________  ________      ${PURPLE}│"
-    echo -e "│${CYAN}         / __ \ \/ / __ \/ | / /  _/  |/  / ____/     ${PURPLE}│"
-    echo -e "│${CYAN}        / /_/ /\  / / / /  |/ // // /|_/ / __/        ${PURPLE}│"
-    echo -e "│${CYAN}       / _, _/ / / /_/ / /|  // // /  / / /___        ${PURPLE}│"
-    echo -e "│${CYAN}      /_/ |_| /_/\____/_/ |_/___/_/  /_/_____/        ${PURPLE}│"
+    echo -e "│${CYAN}          ______  ______  _   ________  ________      ${PURPLE}"
+    echo -e "│${CYAN}         / __ \ \/ / __ \/ | / /  _/  |/  / ____/     ${PURPLE}"
+    echo -e "│${CYAN}        / /_/ /\  / / / /  |/ // // /|_/ / __/        ${PURPLE}"
+    echo -e "│${CYAN}       / _, _/ / / /_/ / /|  // // /  / / /___        ${PURPLE}"
+    echo -e "│${CYAN}      /_/ |_| /_/\____/_/ |_/___/_/  /_/_____/        ${PURPLE}"
     echo -e "├──────────────────────────────────────────────────────┤"
-    echo -e "│${BOLD} Versi ${VERSION} • Channel: Muse Indonesia • by Ryoukaii${RESET}${PURPLE}  │"
+    echo -e "│${BOLD} Versi ${VERSION} • Channel: Muse Indonesia • by Ryoukaii${RESET}${PURPLE}  "
     echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
     
     # Cek update setiap kali aplikasi dibuka
@@ -41,7 +41,7 @@ header() {
 # Fungsi untuk footer
 footer() {
     echo -e "\n${PURPLE}╭──────────────────────────────────────────────────────╮"
-    echo -e "│${CYAN}  [N] Cari lagi   ${GREEN}[P] Putar ulang   ${YELLOW}[Q] Keluar   ${ORANGE}[U] Update  ${PURPLE}│"
+    echo -e "│${CYAN}  [N] Cari lagi   ${GREEN}[P] Putar ulang   ${YELLOW}[Q] Keluar   ${ORANGE}[U] Update  ${PURPLE}"
     echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
     echo -ne "${YELLOW}[?] Pilih menu: ${RESET}"
     
@@ -59,24 +59,24 @@ footer() {
 update_script() {
     header
     echo -e "${CYAN}╭────────────────── ${BOLD}UPDATE RYONIME${RESET}${CYAN} ───────────────────╮"
-    echo -e "│                                                      │"
+    echo -e "│                                                      "
     
     # Cek koneksi internet
     if ! ping -c 1 github.com &> /dev/null; then
-        echo -e "│  ${RED}[✗] Tidak dapat terhubung ke internet!${RESET}${CYAN}          │"
-        echo -e "│                                                      │"
+        echo -e "│  ${RED}[✗] Tidak dapat terhubung ke internet!${RESET}${CYAN}          "
+        echo -e "│                                                      "
         echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
         sleep 2
         return
     fi
     
     # Dapatkan versi terbaru dari GitHub
-    echo -e "│  ${YELLOW}[~] Memeriksa versi terbaru...${RESET}${CYAN}                  │"
+    echo -e "│  ${YELLOW}[~] Memeriksa versi terbaru...${RESET}${CYAN}                  "
     latest_version=$(curl -s "$RAW_URL" | grep -m1 "^VERSION=" | cut -d'"' -f2)
     
     if [[ -z "$latest_version" ]]; then
-        echo -e "│  ${RED}[✗] Gagal memeriksa versi terbaru!${RESET}${CYAN}             │"
-        echo -e "│                                                      │"
+        echo -e "│  ${RED}[✗] Gagal memeriksa versi terbaru!${RESET}${CYAN}             "
+        echo -e "│                                                      "
         echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
         sleep 2
         return
@@ -84,18 +84,18 @@ update_script() {
     
     # Bandingkan versi
     if [[ "$VERSION" == "$latest_version" ]]; then
-        echo -e "│  ${GREEN}[✓] Anda sudah menggunakan versi terbaru!${RESET}${CYAN}      │"
-        echo -e "│                                                      │"
+        echo -e "│  ${GREEN}[✓] Anda sudah menggunakan versi terbaru!${RESET}${CYAN}      "
+        echo -e "│                                                      "
         echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
         sleep 2
         return
     fi
     
     # Tampilkan info update
-    echo -e "│  ${GREEN}Versi saat ini: ${YELLOW}$VERSION${RESET}${CYAN}                       │"
-    echo -e "│  ${GREEN}Versi terbaru:  ${YELLOW}$latest_version${RESET}${CYAN}                     │"
-    echo -e "│                                                      │"
-    echo -e "│  ${YELLOW}[~] Mengunduh pembaruan...${RESET}${CYAN}                      │"
+    echo -e "│  ${GREEN}Versi saat ini: ${YELLOW}$VERSION${RESET}${CYAN}                       "
+    echo -e "│  ${GREEN}Versi terbaru:  ${YELLOW}$latest_version${RESET}${CYAN}                     "
+    echo -e "│                                                      "
+    echo -e "│  ${YELLOW}[~] Mengunduh pembaruan...${RESET}${CYAN}                      "
     
     # Backup script saat ini
     cp "$SCRIPT_PATH" "${SCRIPT_PATH}.bak"
@@ -105,9 +105,9 @@ update_script() {
         # Pertahankan permission asli
         chmod +x "$SCRIPT_PATH"
         
-        echo -e "│  ${GREEN}[✓] Berhasil memperbarui ke versi $latest_version!${RESET}${CYAN} │"
-        echo -e "│                                                      │"
-        echo -e "│  ${YELLOW}Script akan dijalankan ulang...${RESET}${CYAN}                 │"
+        echo -e "│  ${GREEN}[✓] Berhasil memperbarui ke versi $latest_version!${RESET}${CYAN} "
+        echo -e "│                                                      "
+        echo -e "│  ${YELLOW}Script akan dijalankan ulang...${RESET}${CYAN}                 "
         echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
         
         # Jalankan ulang script dengan versi baru
@@ -116,8 +116,8 @@ update_script() {
     else
         # Restore backup jika gagal
         mv "${SCRIPT_PATH}.bak" "$SCRIPT_PATH"
-        echo -e "│  ${RED}[✗] Gagal mengunduh pembaruan!${RESET}${CYAN}                  │"
-        echo -e "│                                                      │"
+        echo -e "│  ${RED}[✗] Gagal mengunduh pembaruan!${RESET}${CYAN}                  "
+        echo -e "│                                                      "
         echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
         sleep 2
     fi
@@ -158,22 +158,22 @@ check_update() {
 show_help() {
     clear
     echo -e "${CYAN}╭────────────────── ${BOLD}BANTUAN RYONIME${RESET}${CYAN} ───────────────────╮"
-    echo -e "│                                                      │"
-    echo -e "│  ${YELLOW}• Cara Penggunaan:${RESET}${CYAN}                                  │"
-    echo -e "│    1. Masukkan judul anime yang ingin dicari         │"
-    echo -e "│    2. Pilih video dari daftar hasil                  │"
-    echo -e "│    3. Pilih kualitas video                           │"
-    echo -e "│    4. Pilih pemutar video                            │"
-    echo -e "│                                                      │"
-    echo -e "│  ${YELLOW}• Fitur Auto-Update:${RESET}${CYAN}                                │"
-    echo -e "│    - Sistem akan otomatis cek versi baru             │"
-    echo -e "│    - Pilih [U] Update untuk memperbarui              │"
-    echo -e "│    - Tidak perlu chmod ulang setelah update          │"
-    echo -e "│                                                      │"
-    echo -e "│  ${YELLOW}• Opsi Command Line:${RESET}${CYAN}                                │"
-    echo -e "│    ${GREEN}-u${RESET}${CYAN}      Perbarui ke versi terbaru                 │"
-    echo -e "│    ${GREEN}-h${RESET}${CYAN}      Tampilkan bantuan ini                     │"
-    echo -e "│                                                      │"
+    echo -e "│                                                      "
+    echo -e "│  ${YELLOW}• Cara Penggunaan:${RESET}${CYAN}                                  "
+    echo -e "│    1. Masukkan judul anime yang ingin dicari         "
+    echo -e "│    2. Pilih video dari daftar hasil                  "
+    echo -e "│    3. Pilih kualitas video                           "
+    echo -e "│    4. Pilih pemutar video                            "
+    echo -e "│                                                      "
+    echo -e "│  ${YELLOW}• Fitur Auto-Update:${RESET}${CYAN}                                "
+    echo -e "│    - Sistem akan otomatis cek versi baru             "
+    echo -e "│    - Pilih [U] Update untuk memperbarui              "
+    echo -e "│    - Tidak perlu chmod ulang setelah update          "
+    echo -e "│                                                      "
+    echo -e "│  ${YELLOW}• Opsi Command Line:${RESET}${CYAN}                                "
+    echo -e "│    ${GREEN}-u${RESET}${CYAN}      Perbarui ke versi terbaru                 "
+    echo -e "│    ${GREEN}-h${RESET}${CYAN}      Tampilkan bantuan ini                     "
+    echo -e "│                                                      "
     echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
     echo -e "\n${GREEN}Tekan enter untuk kembali...${RESET}"
     read
@@ -380,12 +380,12 @@ main_flow() {
 play_video() {
     header
     echo -e "${GREEN}╭────────────────── ${BOLD}SEDANG MEMUTAR${RESET}${GREEN} ───────────────────╮"
-    echo -e "│                                                      │"
+    echo -e "│                                                      "
     echo -e "│  ${CYAN}• Judul:${RESET} ${BOLD}$clean_selected_title${RESET}"
     echo -e "│  ${CYAN}• Durasi:${RESET} ${YELLOW}$duration${RESET}"
     echo -e "│  ${CYAN}• Kualitas:${RESET} ${ORANGE}$quality_name${RESET}"
     echo -e "│  ${CYAN}• Pemutar:${RESET} ${PURPLE}$player_name${RESET}"
-    echo -e "│                                                      │"
+    echo -e "│                                                      "
     echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
     echo -e "${YELLOW}Tekan 'q' untuk berhenti memutar...${RESET}\n"
     
