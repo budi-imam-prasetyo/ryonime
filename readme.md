@@ -1,135 +1,162 @@
-# Dokumentasi RyoNime
+# Dokumentasi RyoNime (Versi Terbaru)
 
 ## 📜 Tentang RyoNime
-RyoNime adalah alat pencarian dan pemutaran anime berbasis CLI yang mengkhususkan diri pada konten ber-subtitle Indonesia dari channel Muse Indonesia. Projek ini merupakan modifikasi dari [animek-cli](https://github.com/THEUNFORGIVENNN/animek-cli) dengan penambahan fitur dan peningkatan stabilitas.
+RyoNime adalah alat pencarian dan pemutaran anime berbasis CLI yang mengkhususkan diri pada konten ber-subtitle Indonesia dari channel Muse Indonesia. Projek ini merupakan modifikasi dari [animek-cli](https://github.com/THEUNFORGIVENNN/animek-cli) dengan penambahan fitur **auto-update** dan peningkatan stabilitas.
 
 ## ✨ Fitur Utama
 1. **Pemilihan Resolusi Video**  
-   Pengguna dapat memilih kualitas video sesuai preferensi (360p, 480p, 720p, atau kualitas terbaik)
-
+   Pilih kualitas video sesuai preferensi (360p, 480p, 720p, atau kualitas terbaik)
+   
 2. **Dukungan Multi-Pemutar**  
-   Mendukung berbagai pemutar video: MPV (direkomendasikan), VLC, dan IINA (untuk macOS)
+   Otomatis mendeteksi pemutar video: MPV (direkomendasikan), VLC, dan IINA (macOS)
 
-3. **Antarmuka Interaktif**  
-   Menu navigasi intuitif dengan dukungan tombol panah dan tampilan berwarna
+3. **Antarmuka Interaktif Modern**  
+   - Tampilan berwarna dengan navigasi panah  
+   - Animasi loading  
+   - Panel informasi lengkap  
 
-4. **Informasi Video Lengkap**  
-   Menampilkan durasi video sebelum diputar untuk membantu pengambilan keputusan
+4. **Sistem Auto-Update**  
+   - Update ke versi terbaru tanpa chmod ulang  
+   - Notifikasi versi baru  
+   - Backup otomatis sebelum update  
 
-5. **Filter Konten Otomatis**  
-   Otomatis menyaring video dengan durasi lebih dari 1 jam
+5. **Filter Cerdas**  
+   - Auto-skip video >1 jam  
+   - Tampilkan durasi video sebelum diputar  
 
-6. **Penanganan Error Komprehensif**  
-   Sistem notifikasi error yang informatif dengan solusi praktis
+## 🚀 Instalasi Cepat
 
-## 📥 Prasyarat dan Instalasi
-
-### Dependensi Wajib
-```bash
-# Instal yt-dlp
-pip3 install yt-dlp
-
-# Instal salah satu pemutar video:
-# Untuk MPV (direkomendasikan)
-sudo apt install mpv
-
-# Untuk VLC
-sudo apt install vlc
-
-# Untuk IINA (macOS)
-brew install iina
-```
-
-### Instalasi RyoNime
+### Untuk Semua Platform:
 ```bash
 # Download script
-wget https://raw.githubusercontent.com/username/ryonime/main/ryonime.sh
+wget https://raw.githubusercontent.com/budi-imam-prasetyo/ryonime/main/ryonime.sh
 
 # Berikan izin eksekusi
 chmod +x ryonime.sh
 
-# Jalankan aplikasi
+# Jalankan
 ./ryonime.sh
-
-# Jika ingin dijalankan tanpa (.sh)
-
-    mv ryonime.sh ryonime
-    mv ryonime ~/.local/bin/
 ```
 
-## 🖥️ Penggunaan
-1. Jalankan script di terminal
-2. Masukkan judul anime yang ingin dicari
-3. Pilih video dari daftar hasil
-4. Pilih kualitas resolusi yang diinginkan
-5. Pilih pemutar video yang tersedia
-6. Video akan diputar secara otomatis
-
+### Instalasi Permanen (Linux/macOS):
 ```bash
-Contoh alur:
+# Pindahkan ke PATH sistem
+mkdir -p ~/.local/bin
+mv ryonime.sh ~/.local/bin/ryonime
+chmod +x ~/.local/bin/ryonime
+
+# Sekarang bisa dijalankan dari mana saja:
+ryonime
+```
+
+> **Catatan**: Pastikan `~/.local/bin` ada di PATH Anda. Tambahkan di `~/.bashrc` atau `~/.zshrc`:
+> ```bash
+> export PATH="$HOME/.local/bin:$PATH"
+> ```
+
+## 🔄 Cara Update
+RyoNime bisa diupdate dengan 3 cara:
+
+1. **Melalui Menu Aplikasi**  
+   Setelah selesai menonton, pilih opsi `[U] Update`
+   
+2. **Via Command Line**  
+   ```bash
+   ryonime --update
+   ```
+   
+3. **Otomatis**  
+   Aplikasi akan beri notifikasi jika ada versi baru
+
+## 🖥️ Penggunaan
+```bash
+# Jalankan aplikasi
+ryonime
+
+# Tampilkan bantuan
+ryonime --help
+
+# Update versi terbaru
+ryonime --update
+```
+
+### Alur Kerja:
+```bash
 $ ryonime
 [?] Masukkan judul anime: Jujutsu Kaisen
 [~] Mencari "Jujutsu Kaisen" di channel Muse Indonesia...
 [+] Ditemukan 15 hasil:
-──────────────────────────────────
- 1. Jujutsu Kaisen Episode 1
- 2. Jujutsu Kaisen Episode 2
- ...
-──────────────────────────────────
+╭──────────────────────────────────────────────────────╮
+│ 1. Jujutsu Kaisen Episode 1                         00:23:45 │
+│ 2. Jujutsu Kaisen Episode 2                         00:24:10 │
+╰──────────────────────────────────────────────────────╯
 [?] Pilih video [1-15]: 1
 [~] Mendapatkan kualitas video...
 [?] Pilih kualitas video:
- 1. Kualitas terbaik (default)
- 2. 720p
- 3. 480p
+  > Kualitas terbaik (default)
+    720p
+    480p
+[?] Pilih pemutar video:
+  > mpv
+    vlc
 [▶] Memutar: Jujutsu Kaisen Episode 1...
 ```
 
-## 🛠️ Fitur Teknis Tambahan
-Proyek ini telah ditingkatkan dengan beberapa fitur teknis:
+## 🆕 Fitur Auto-Update
+RyoNime memiliki sistem update otomatis yang canggih:
 
-### 1. Sistem Deteksi Pemutar Otomatis
-Script secara otomatis mendeteksi aplikasi pemutar video yang terinstall di sistem pengguna dan menyesuaikan opsi yang tersedia
+- **Cek Versi Harian** - Aplikasi otomatis cek versi baru setiap hari
+- **One-Click Update** - Update dengan satu klik tanpa terminal
+- **Backup Otomatis** - Script lama di-backup sebelum diupdate
+- **Restore Otomatis** - Kembali ke versi lama jika update gagal
+- **Pertahankan Permission** - Tidak perlu chmod ulang setelah update
 
-### 2. Navigasi Berbasis Panah
-Antarmuka yang mendukung navigasi dengan tombol panah untuk pengalaman pengguna yang lebih intuitif
+![Demo Auto-Update](https://example.com/ryonime-update-demo.gif)
 
-### 3. Validasi Input Terlapis
-Sistem validasi input multi-level untuk memastikan stabilitas aplikasi pada berbagai kondisi penggunaan
-
-### 4. Sistem Pelaporan Error Terstruktur
-Mekanisme penanganan error yang memberikan informasi spesifik dan solusi praktis untuk berbagai skenario error
-
-## 🔧 Modifikasi
-Pengguna dapat melakukan modifikasi sesuai kebutuhan:
+## 🛠️ Konfigurasi Lanjutan
+### Ubah Sumber Anime:
 ```bash
-# Ganti channel sumber
-CHANNEL_ID="UCxxxxxxxxxxxxxxxxx"  # Ganti dengan ID channel YouTube lain
+# Edit script dan ganti CHANNEL_ID
+nano ~/.local/bin/ryonime
 
-# Sesuaikan jumlah hasil maksimal
-MAX_RESULTS=30  # Default: 20
+# Ganti dengan ID channel YouTube lain
+CHANNEL_ID="UCxxxxxxxxxxxxxxxxx"
+```
 
-# Tambahkan opsi yt-dlp tambahan
-YTDLP_OPTS="--format bestvideo[height<=720]+bestaudio/best[height<=720]"
+### Opsi Tambahan:
+```bash
+# Maksimal hasil pencarian (default: 15)
+MAX_RESULTS=30
+
+# Format video default
+YTDLP_OPTS="--format bestvideo[height<=1080]+bestaudio/best"
 ```
 
 ## 🤝 Kontribusi
-Kontribusi untuk pengembangan RyoNime dapat dilakukan melalui:
-1. Pelaporan issue di repositori
-2. Mengajukan pull request untuk perbaikan bug
-3. Mengusulkan fitur baru melalui diskusi
+Kontribusi diterima melalui:
+1. Pelaporan issue
+2. Pull request untuk perbaikan bug
+3. Usulan fitur baru
+4. Perbaikan dokumentasi
 
 ## 📃 Lisensi
-Proyek ini dilisensikan di bawah [GPL-3.0 License](LICENSE). Pengguna diizinkan untuk:
-- Menggunakan secara komersial
-- Memodifikasi
-- Mendistribusikan
-- Menggunakan secara pribadi
+Proyek ini dilisensikan di bawah **[GPL-3.0 License](LICENSE)**. 
+
+Anda diperbolehkan:
+- Menggunakan secara komersial ✅
+- Memodifikasi ✏️
+- Mendistribusikan 📤
+- Menggunakan secara pribadi 🔒
 
 Dengan ketentuan:
-- Menyertakan pemberitahuan hak cipta
-- Menyertakan salinan lisensi
-- Perubahan besar harus didokumentasikan
+- Menyertakan pemberitahuan hak cipta ©️
+- Menyertakan salinan lisensi 📄
+- Perubahan besar harus didokumentasikan 📝
 
 ## 📞 Kontak
-Untuk pertanyaan lebih lanjut, silakan buka issue di repositori GitHub proyek ini.
+- Issues: [https://github.com/budi-imam-prasetyo/ryonime/issues](https://github.com/budi-imam-prasetyo/ryonime/issues)
+- Email: budi.imam.prasetyo@example.com
+
+---
+
+**RyoNime** © 2024 - Anime Gratis, Bahagia Tanpa Iklan!

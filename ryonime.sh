@@ -1,6 +1,14 @@
 #!/bin/bash
-# RyoNime - Pencarian Anime Sub Indo
+# RyoNime - Pencarian Anime Sub Indo dengan Auto-Update
 # Modifikasi dari animek-cli: https://github.com/THEUNFORGIVENNN/animek-cli
+
+# Konfigurasi
+CHANNEL_ID="UCVg6XW6LiG8y7ZP5l9nN3Rw"  # Muse Indonesia
+MAX_RESULTS=15
+VERSION="1.3.0"
+REPO_URL="https://github.com/username/ryonime"
+RAW_URL="https://raw.githubusercontent.com/username/ryonime/main/ryonime.sh"
+SCRIPT_PATH=$(realpath "$0")
 
 # Warna
 BOLD="\033[1m"
@@ -13,30 +21,27 @@ ORANGE="\033[38;5;208m"
 BLUE="\033[38;5;39m"
 RESET="\033[0m"
 
-# Konfigurasi
-CHANNEL_ID="UCVg6XW6LiG8y7ZP5l9nN3Rw"  # Muse Indonesia
-MAX_RESULTS=15
-VERSION="1.2.0"
-
 # Fungsi untuk header
 header() {
     clear
     echo -e "${PURPLE}╭──────────────────────────────────────────────────────╮"
-    echo -e "│${CYAN}      ______  ______  _   ________  _________ ${PURPLE}│"
-    echo -e "│${CYAN}     / __ \ \/ / __ \/ | / /  _/  |/  / ____/${PURPLE}│"
-    echo -e "│${CYAN}    / /_/ /\  / / / /  |/ // // /|_/ / __/  ${PURPLE}│"
-    echo -e "│${CYAN}    / /_/ /\  / / / /  |/ // // /|_/ / __/ ${PURPLE}│"
-    echo -e "│${CYAN}   / _, _/ / / /_/ / /|  // // /  / / /___${PURPLE}│"
-    echo -e "│${CYAN}  /_/ |_| /_/\____/_/ |_/___/_/  /_/_____/ ${PURPLE}│"
+    echo -e "│${CYAN}      ______  ______  _   ________  ________         ${PURPLE}│"
+    echo -e "│${CYAN}     / __ \ \/ / __ \/ | / /  _/  |/  / ____/        ${PURPLE}│"
+    echo -e "│${CYAN}    / /_/ /\  / / / /  |/ // // /|_/ / __/           ${PURPLE}│"
+    echo -e "│${CYAN}   / _, _/ / / /_/ / /|  // // /  / / /___           ${PURPLE}│"
+    echo -e "│${CYAN}  /_/ |_| /_/\____/_/ |_/___/_/  /_/_____/           ${PURPLE}│"
     echo -e "├──────────────────────────────────────────────────────┤"
-    echo -e "│${BOLD}   Versi ${VERSION} • Channel: Muse Indonesia • by Ryo${RESET}${PURPLE}       │"
+    echo -e "│${BOLD}   Versi ${VERSION} • Channel: Muse Indonesia • by Ryo${RESET}${PURPLE}      │"
     echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
+    
+    # Cek update setiap kali aplikasi dibuka
+    check_update
 }
 
 # Fungsi untuk footer
 footer() {
     echo -e "\n${PURPLE}╭──────────────────────────────────────────────────────╮"
-    echo -e "│${CYAN}  [N] Cari lagi   ${GREEN}[P] Putar ulang   ${YELLOW}[Q] Keluar   ${ORANGE}[?] Bantuan  ${PURPLE}│"
+    echo -e "│${CYAN}  [N] Cari lagi   ${GREEN}[P] Putar ulang   ${YELLOW}[Q] Keluar   ${ORANGE}[U] Update  ${PURPLE}│"
     echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
     echo -ne "${YELLOW}[?] Pilih menu: ${RESET}"
     
@@ -44,10 +49,109 @@ footer() {
     case ${choice,,} in
         n) main_flow ;;
         p) play_video ;;
-        \?) show_help ;;
+        u) update_script ;;
         q) echo -e "\n${GREEN}[+] Terima kasih telah menggunakan RyoNime!${RESET}"; exit 0 ;;
         *) echo -e "\n${RED}[!] Pilihan tidak valid${RESET}" ;;
     esac
+}
+
+# Fungsi auto-update
+update_script() {
+    header
+    echo -e "${CYAN}╭────────────────── ${BOLD}UPDATE RYONIME${RESET}${CYAN} ───────────────────╮"
+    echo -e "│                                                      │"
+    
+    # Cek koneksi internet
+    if ! ping -c 1 github.com &> /dev/null; then
+        echo -e "│  ${RED}[✗] Tidak dapat terhubung ke internet!${RESET}${CYAN}          │"
+        echo -e "│                                                      │"
+        echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
+        sleep 2
+        return
+    fi
+    
+    # Dapatkan versi terbaru dari GitHub
+    echo -e "│  ${YELLOW}[~] Memeriksa versi terbaru...${RESET}${CYAN}                  │"
+    latest_version=$(curl -s "$RAW_URL" | grep -m1 "^VERSION=" | cut -d'"' -f2)
+    
+    if [[ -z "$latest_version" ]]; then
+        echo -e "│  ${RED}[✗] Gagal memeriksa versi terbaru!${RESET}${CYAN}             │"
+        echo -e "│                                                      │"
+        echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
+        sleep 2
+        return
+    fi
+    
+    # Bandingkan versi
+    if [[ "$VERSION" == "$latest_version" ]]; then
+        echo -e "│  ${GREEN}[✓] Anda sudah menggunakan versi terbaru!${RESET}${CYAN}      │"
+        echo -e "│                                                      │"
+        echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
+        sleep 2
+        return
+    fi
+    
+    # Tampilkan info update
+    echo -e "│  ${GREEN}Versi saat ini: ${YELLOW}$VERSION${RESET}${CYAN}                       │"
+    echo -e "│  ${GREEN}Versi terbaru:  ${YELLOW}$latest_version${RESET}${CYAN}                     │"
+    echo -e "│                                                      │"
+    echo -e "│  ${YELLOW}[~] Mengunduh pembaruan...${RESET}${CYAN}                      │"
+    
+    # Backup script saat ini
+    cp "$SCRIPT_PATH" "${SCRIPT_PATH}.bak"
+    
+    # Download versi baru
+    if curl -s "$RAW_URL" -o "$SCRIPT_PATH"; then
+        # Pertahankan permission asli
+        chmod +x "$SCRIPT_PATH"
+        
+        echo -e "│  ${GREEN}[✓] Berhasil memperbarui ke versi $latest_version!${RESET}${CYAN} │"
+        echo -e "│                                                      │"
+        echo -e "│  ${YELLOW}Script akan dijalankan ulang...${RESET}${CYAN}                 │"
+        echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
+        
+        # Jalankan ulang script dengan versi baru
+        sleep 2
+        exec "$SCRIPT_PATH"
+    else
+        # Restore backup jika gagal
+        mv "${SCRIPT_PATH}.bak" "$SCRIPT_PATH"
+        echo -e "│  ${RED}[✗] Gagal mengunduh pembaruan!${RESET}${CYAN}                  │"
+        echo -e "│                                                      │"
+        echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
+        sleep 2
+    fi
+}
+
+# Fungsi untuk cek update (dijalankan secara otomatis)
+check_update() {
+    # Cek update hanya 1x sehari
+    last_check_file="/tmp/ryonime_last_update_check"
+    current_date=$(date +%Y%m%d)
+    
+    if [[ -f "$last_check_file" ]]; then
+        last_check=$(cat "$last_check_file")
+        if [[ "$current_date" == "$last_check" ]]; then
+            return
+        fi
+    fi
+    
+    # Simpan tanggal cek terakhir
+    echo "$current_date" > "$last_check_file"
+    
+    # Cek versi terbaru di background
+    ( 
+        latest_version=$(curl -s "$RAW_URL" | grep -m1 "^VERSION=" | cut -d'"' -f2 2>/dev/null)
+        
+        if [[ -n "$latest_version" && "$VERSION" != "$latest_version" ]]; then
+            echo -e "\n${YELLOW}════════════════════════════════════════════════════${RESET}"
+            echo -e "${GREEN} Update tersedia! ${BOLD}${VERSION} → ${latest_version}${RESET}"
+            echo -e "${YELLOW} Jalankan perintah berikut untuk memperbarui:${RESET}"
+            echo -e "${CYAN}   $0 -u${RESET}"
+            echo -e "${YELLOW} Atau pilih menu [U] Update${RESET}"
+            echo -e "${YELLOW}════════════════════════════════════════════════════${RESET}\n"
+        fi
+    ) &
 }
 
 # Fungsi bantuan
@@ -61,18 +165,14 @@ show_help() {
     echo -e "│    3. Pilih kualitas video                           │"
     echo -e "│    4. Pilih pemutar video                            │"
     echo -e "│                                                      │"
-    echo -e "│  ${YELLOW}• Navigasi:${RESET}${CYAN}                                            │"
-    echo -e "│    - Gunakan nomor untuk memilih opsi                │"
-    echo -e "│    - Gunakan tombol panah (↑/↓) untuk navigasi menu  │"
+    echo -e "│  ${YELLOW}• Fitur Auto-Update:${RESET}${CYAN}                                 │"
+    echo -e "│    - Sistem akan otomatis cek versi baru             │"
+    echo -e "│    - Pilih [U] Update untuk memperbarui              │"
+    echo -e "│    - Tidak perlu chmod ulang setelah update          │"
     echo -e "│                                                      │"
-    echo -e "│  ${YELLOW}• Fitur:${RESET}${CYAN}                                               │"
-    echo -e "│    - Auto-detect pemutar video (MPV, VLC, IINA)      │"
-    echo -e "│    - Pilih resolusi video sesuai kebutuhan           │"
-    echo -e "│    - Skip video dengan durasi > 1 jam                │"
-    echo -e "│                                                      │"
-    echo -e "│  ${YELLOW}• Dependensi:${RESET}${CYAN}                                          │"
-    echo -e "│    - yt-dlp (wajib)                                  │"
-    echo -e "│    - MPV/VLC/IINA (pilih salah satu)                 │"
+    echo -e "│  ${YELLOW}• Opsi Command Line:${RESET}${CYAN}                                  │"
+    echo -e "│    ${GREEN}-u${RESET}${CYAN}      Perbarui ke versi terbaru                  │"
+    echo -e "│    ${GREEN}-h${RESET}${CYAN}      Tampilkan bantuan ini                      │"
     echo -e "│                                                      │"
     echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
     echo -e "\n${GREEN}Tekan enter untuk kembali...${RESET}"
@@ -298,6 +398,28 @@ play_video() {
     footer
 }
 
+# Handle command line arguments
+handle_args() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -u|--update)
+                update_script
+                exit 0
+                ;;
+            -h|--help)
+                show_help
+                exit 0
+                ;;
+            *)
+                echo -e "${RED}Opsi tidak dikenal: $1${RESET}"
+                echo -e "Gunakan ${GREEN}$0 -h${RESET} untuk bantuan"
+                exit 1
+                ;;
+        esac
+        shift
+    done
+}
+
 # Inisialisasi
 if ! check_dependency "yt-dlp"; then
     header
@@ -313,6 +435,9 @@ if [[ -z "$default_player" ]]; then
     echo -e "${YELLOW}Instal salah satu: mpv, vlc, atau iina${RESET}"
     exit 1
 fi
+
+# Handle command line arguments
+handle_args "$@"
 
 # Mulai program
 main_flow
