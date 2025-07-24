@@ -5,7 +5,7 @@
 # Konfigurasi
 CHANNEL_ID="UCVg6XW6LiG8y7ZP5l9nN3Rw"  # Muse Indonesia
 MAX_RESULTS=15
-VERSION="1.3.1"
+VERSION="1.3.2"
 REPO_URL="https://github.com/username/ryonime"
 RAW_URL="https://raw.githubusercontent.com/budi-imam-prasetyo/ryonime/master/ryonime.sh"
 SCRIPT_PATH=$(realpath "$0")
@@ -25,13 +25,13 @@ RESET="\033[0m"
 header() {
     clear
     echo -e "${PURPLE}╭──────────────────────────────────────────────────────╮"
-    echo -e "│${CYAN}          ______  ______  _   ________  ________      ${PURPLE}"
-    echo -e "│${CYAN}         / __ \ \/ / __ \/ | / /  _/  |/  / ____/     ${PURPLE}"
-    echo -e "│${CYAN}        / /_/ /\  / / / /  |/ // // /|_/ / __/        ${PURPLE}"
-    echo -e "│${CYAN}       / _, _/ / / /_/ / /|  // // /  / / /___        ${PURPLE}"
-    echo -e "│${CYAN}      /_/ |_| /_/\____/_/ |_/___/_/  /_/_____/        ${PURPLE}"
+    echo -e "│${CYAN}          ______  ______  _   ________  ________      ${PURPLE}│"
+    echo -e "│${CYAN}         / __ \ \/ / __ \/ | / /  _/  |/  / ____/     ${PURPLE}│"
+    echo -e "│${CYAN}        / /_/ /\  / / / /  |/ // // /|_/ / __/        ${PURPLE}│"
+    echo -e "│${CYAN}       / _, _/ / / /_/ / /|  // // /  / / /___        ${PURPLE}│"
+    echo -e "│${CYAN}      /_/ |_| /_/\____/_/ |_/___/_/  /_/_____/        ${PURPLE}│"
     echo -e "├──────────────────────────────────────────────────────┤"
-    echo -e "│${BOLD} Versi ${VERSION} • Channel: Muse Indonesia • by Ryoukaii${RESET}${PURPLE}  "
+    echo -e "│${BOLD} Versi ${VERSION} • Channel: Muse Indonesia • by Ryoukaii${RESET}${PURPLE}  │"
     echo -e "╰──────────────────────────────────────────────────────╯${RESET}"
     
     # Cek update setiap kali aplikasi dibuka
