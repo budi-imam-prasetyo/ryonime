@@ -7,7 +7,7 @@ CHANNEL_ID="UCVg6XW6LiG8y7ZP5l9nN3Rw"  # Muse Indonesia
 MAX_RESULTS=15
 VERSION="1.3.0"
 REPO_URL="https://github.com/username/ryonime"
-RAW_URL="https://raw.githubusercontent.com/username/ryonime/main/ryonime.sh"
+RAW_URL="https://raw.githubusercontent.com/budi-imam-prasetyo/ryonime/master/ryonime.sh"
 SCRIPT_PATH=$(realpath "$0")
 
 # Warna
