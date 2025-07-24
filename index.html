@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RyoNime - CLI Anime Player</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff3b3b',
+                        secondary: '#00d26a',
+                        accent: '#ffd166',
+                        dark: '#1a1a1a',
+                        brutalRed: '#ff3b3b',
+                        brutalGreen: '#00d26a',
+                        brutalYellow: '#ffd166',
+                        brutalBlue: '#118ab2',
+                    },
+                    fontFamily: {
+                        sans: ['IBM Plex Sans', 'sans-serif'],
+                        mono: ['IBM Plex Mono', 'monospace']
+                    },
+                    boxShadow: {
+                        brutal: '8px 8px 0px 0px #000',
+                        brutalSmall: '4px 4px 0px 0px #000',
+                        brutalHover: '4px 4px 0px 0px #000'
+                    },
+                    borderWidth: {
+                        3: '3px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+        body {
+            background-color: #f0f0f0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .brutal-card {
+            border: 3px solid #000;
+            transition: all 0.2s ease;
+        }
+
+        .brutal-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 8px 8px 0px 0px #000 !important;
+        }
+
+        .terminal {
+            font-family: 'IBM Plex Mono', monospace;
+            background: #1a1a1a;
+            color: #00d26a;
+        }
+
+        .btn-brutal {
+            border: 3px solid #000;
+            transition: all 0.2s ease;
+        }
+
+        .btn-brutal:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 4px 4px 0px 0px #000 !important;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border: 3px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab {
+            border: 3px solid #000;
+            border-bottom: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        .tab-content {
+            border: 3px solid #000;
+            position: relative;
+            top: -3px;
+        }
+
+        .active-tab {
+            background-color: #ff3b3b;
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="font-sans text-dark">
+    <!-- Header -->
+    <header class="bg-brutalRed text-white py-6 px-4 md:px-8" style="border-bottom: 3px solid #000;">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center mb-4 md:mb-0">
+                <div class="bg-white p-2 mr-3" style="border: 3px solid #000;">
+                    <i class="fas fa-terminal text-brutalRed text-2xl"></i>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold">RYONIME</h1>
+            </div>
+            <nav class="flex flex-wrap gap-2">
+                <a href="#features" class="btn-brutal bg-dark px-4 py-2 font-bold">Fitur</a>
+                <a href="#install" class="btn-brutal bg-accent px-4 py-2 font-bold">Instalasi</a>
+                <a href="#update" class="btn-brutal bg-brutalGreen text-white px-4 py-2 font-bold">Update</a>
+                <a href="#contribute" class="btn-brutal bg-brutalBlue text-white px-4 py-2 font-bold">Kontribusi</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-12 px-4 md:px-8">
+        <div class="container mx-auto max-w-6xl">
+            <div class="brutal-card bg-white p-6 md:p-10 shadow-brutal">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h2 class="text-4xl md:text-5xl font-bold mb-4">Streaming Anime CLI<br><span
+                                class="text-brutalRed">Tanpa Iklan!</span></h2>
+                        <p class="text-lg mb-6">
+                            RyoNime adalah alat CLI untuk streaming anime sub Indo langsung dari terminal.
+                            Cepat, ringan, dan tanpa gangguan iklan.
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            <a href="#install" class="btn-brutal bg-brutalRed text-white px-6 py-3 font-bold text-lg">
+                                <i class="fas fa-download mr-2"></i> Install Sekarang
+                            </a>
+                            <a href="https://github.com/budi-imam-prasetyo/ryonime" target="_blank"
+                                class="btn-brutal bg-dark text-white px-6 py-3 font-bold text-lg">
+                                <i class="fab fa-github mr-2"></i> GitHub
+                            </a>
+                        </div>
+                    </div>
+                    <div class="terminal flex items-center justify-center">
+                        <img src="./terminal.png" alt="terminal">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="py-12 px-4 md:px-8 bg-brutalYellow"
+        style="border-top: 3px solid #000; border-bottom: 3px solid #000;">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">
+                <span class="bg-white px-4 py-2" style="border: 3px solid #000;">FITUR UNGGULAN</span>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Feature 1 -->
+                <div class="brutal-card bg-white p-6 shadow-brutal">
+                    <div class="feature-icon bg-brutalRed text-white mb-4">
+                        <i class="fas fa-bolt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Streaming Cepat</h3>
+                    <p>Putar anime langsung dari terminal tanpa buffering. Pengalaman streaming lebih cepat dan ringan.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="brutal-card bg-white p-6 shadow-brutal">
+                    <div class="feature-icon bg-brutalGreen text-white mb-4">
+                        <i class="fas fa-sync-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Auto-Update</h3>
+                    <p>Fitur update otomatis tanpa perlu chmod ulang. Dapatkan versi terbaru dengan satu perintah.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="brutal-card bg-white p-6 shadow-brutal">
+                    <div class="feature-icon bg-brutalBlue text-white mb-4">
+                        <i class="fas fa-sliders-h text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Pemutar Multi-Platform</h3>
+                    <p>Dukungan untuk MPV, VLC, dan IINA. Otomatis deteksi pemutar yang terinstall di sistem Anda.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="brutal-card bg-white p-6 shadow-brutal">
+                    <div class="feature-icon bg-dark text-white mb-4">
+                        <i class="fas fa-filter text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Filter Cerdas</h3>
+                    <p>Auto-skip video lebih dari 1 jam. Tampilkan durasi sebelum diputar untuk efisiensi waktu.</p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="brutal-card bg-white p-6 shadow-brutal">
+                    <div class="feature-icon bg-brutalRed text-white mb-4">
+                        <i class="fas fa-palette text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">UI Interaktif</h3>
+                    <p>Antarmuka warna-warni dengan navigasi panah. Pengalaman CLI yang lebih menyenangkan dan intuitif.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="brutal-card bg-white p-6 shadow-brutal">
+                    <div class="feature-icon bg-brutalGreen text-white mb-4">
+                        <i class="fas fa-ban text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Tanpa Iklan</h3>
+                    <p>Nikmati anime favorit tanpa gangguan iklan. Gratis selamanya dan open source!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation -->
+    <section id="install" class="py-12 px-4 md:px-8">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">
+                <span class="bg-white px-4 py-2" style="border: 3px solid #000;">INSTALASI CEPAT</span>
+            </h2>
+
+            <div class="brutal-card bg-white p-6 shadow-brutal mb-12">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">Semua Platform</h3>
+                        <div class="terminal bg-dark p-4 mb-4">
+                            wget https://raw.githubusercontent.com/budi-imam-prasetyo/ryonime/main/ryonime.sh<br>
+                            chmod +x ryonime.sh<br>
+                            ./ryonime.sh
+                        </div>
+                        <p class="mb-4">Script akan bekerja di Windows (WSL), Linux, dan macOS.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">Instalasi Permanen</h3>
+                        <div class="terminal bg-dark p-4 mb-4">
+                            mkdir -p ~/.local/bin<br>
+                            mv ryonime.sh ~/.local/bin/ryonime<br>
+                            chmod +x ~/.local/bin/ryonime<br>
+                            echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc<br>
+                            source ~/.bashrc<br>
+                            ryonime
+                        </div>
+                        <p>Jalankan dari mana saja dengan perintah <code class="bg-gray-200 px-1">ryonime</code></p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-6 text-center">Dependensi Wajib</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="brutal-card bg-white p-6 text-center">
+                    <i class="fab fa-python text-4xl text-brutalBlue mb-3"></i>
+                    <h4 class="text-xl font-bold mb-2">yt-dlp</h4>
+                    <div class="terminal bg-dark p-3 text-sm">
+                        pip3 install yt-dlp
+                    </div>
+                </div>
+
+                <div class="brutal-card bg-white p-6 text-center">
+                    <i class="fas fa-play-circle text-4xl text-brutalRed mb-3"></i>
+                    <h4 class="text-xl font-bold mb-2">Pemutar Video</h4>
+                    <div class="terminal bg-dark p-3 text-sm">
+                        # MPV (direkomendasikan)<br>
+                        sudo apt install mpv<br><br>
+
+                        # VLC<br>
+                        sudo apt install vlc<br><br>
+
+                        # IINA (macOS)<br>
+                        brew install iina
+                    </div>
+                </div>
+
+                <div class="brutal-card bg-white p-6 text-center">
+                    <i class="fas fa-terminal text-4xl text-brutalGreen mb-3"></i>
+                    <h4 class="text-xl font-bold mb-2">Bash</h4>
+                    <p>Bash versi 4.0+ (biasanya sudah terinstall di sistem modern)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Update Feature -->
+    <section id="update" class="py-12 px-4 md:px-8 bg-brutalBlue text-white"
+        style="border-top: 3px solid #000; border-bottom: 3px solid #000;">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">
+                <span class="bg-white text-brutalBlue px-4 py-2" style="border: 3px solid #000;">FITUR
+                    AUTO-UPDATE</span>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <div class="brutal-card bg-white text-dark p-6 shadow-brutal">
+                        <h3 class="text-2xl font-bold mb-4">Cara Update:</h3>
+
+                        <div class="mb-6">
+                            <h4 class="text-xl font-bold mb-2 flex items-center">
+                                <span
+                                    class="bg-brutalGreen text-white w-8 h-8 flex items-center justify-center mr-2">1</span>
+                                Melalui Aplikasi
+                            </h4>
+                            <p>Setelah selesai menonton, pilih opsi <span class="font-mono bg-gray-200 px-1">[U]
+                                    Update</span></p>
+                        </div>
+
+                        <div class="mb-6">
+                            <h4 class="text-xl font-bold mb-2 flex items-center">
+                                <span
+                                    class="bg-brutalGreen text-white w-8 h-8 flex items-center justify-center mr-2">2</span>
+                                Via Terminal
+                            </h4>
+                            <div class="terminal bg-dark text-green-400 p-4">
+                                ryonime --update
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-xl font-bold mb-2 flex items-center">
+                                <span
+                                    class="bg-brutalGreen text-white w-8 h-8 flex items-center justify-center mr-2">3</span>
+                                Otomatis
+                            </h4>
+                            <p>Notifikasi akan muncul jika ada versi baru</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div class="inline-block bg-white p-2 mb-4" style="border: 3px solid #000;">
+                        <i class="fas fa-rotate text-4xl text-brutalBlue"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Keunggulan Update System</h3>
+                    <ul class="text-left space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-brutalGreen mr-2 mt-1"></i>
+                            <span><strong>Backup Otomatis</strong> - Script lama disimpan sebagai backup</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-brutalGreen mr-2 mt-1"></i>
+                            <span><strong>Restore Otomatis</strong> - Kembali ke versi lama jika update gagal</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-brutalGreen mr-2 mt-1"></i>
+                            <span><strong>Pertahankan Permission</strong> - Tidak perlu chmod ulang</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-brutalGreen mr-2 mt-1"></i>
+                            <span><strong>Cek Harian</strong> - Otomatis cek versi baru setiap hari</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-brutalGreen mr-2 mt-1"></i>
+                            <span><strong>One-Click</strong> - Proses update dengan satu perintah</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Usage -->
+    <section class="py-12 px-4 md:px-8">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">
+                <span class="bg-white px-4 py-2" style="border: 3px solid #000;">CARA PENGGUNAAN</span>
+            </h2>
+
+            <div class="brutal-card bg-white p-6 shadow-brutal">
+                <div class="overflow-x-auto">
+                    <pre class="terminal bg-dark p-4 text-green-400">
+[?] Masukkan judul anime: <span class="text-white">Jujutsu Kaisen</span>
+[~] Mencari "Jujutsu Kaisen" di channel Muse Indonesia...
+[+] Ditemukan 15 hasil:
+╭──────────────────────────────────────────────────────╮
+│ <span class="text-cyan-300">1</span>. Jujutsu Kaisen Episode 1                 <span class="text-yellow-300">00:23:45</span> │
+│ <span class="text-cyan-300">2</span>. Jujutsu Kaisen Episode 2                 <span class="text-yellow-300">00:24:10</span> │
+│ <span class="text-cyan-300">3</span>. Jujutsu Kaisen Episode 3                 <span class="text-yellow-300">00:23:55</span> │
+╰──────────────────────────────────────────────────────╯
+[?] Pilih video [1-15]: <span class="text-white">1</span>
+[~] Mendapatkan kualitas video...
+[?] Pilih kualitas video:
+  <span class="text-green-400">&gt;</span> Kualitas terbaik (default)
+    720p
+    480p
+[?] Pilih pemutar video:
+  <span class="text-green-400">&gt;</span> mpv
+    vlc
+[▶] Memutar: Jujutsu Kaisen Episode 1...
+                    </pre>
+                </div>
+
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="brutal-card bg-gray-100 p-4">
+                        <h4 class="font-bold mb-2">Perintah Dasar</h4>
+                        <ul class="space-y-2">
+                            <li class="flex">
+                                <span class="font-mono bg-gray-200 px-2 mr-2">ryonime</span>
+                                <span>Jalankan aplikasi</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-mono bg-gray-200 px-2 mr-2">ryonime --help</span>
+                                <span>Tampilkan bantuan</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-mono bg-gray-200 px-2 mr-2">ryonime --update</span>
+                                <span>Update versi terbaru</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="brutal-card bg-gray-100 p-4">
+                        <h4 class="font-bold mb-2">Navigasi</h4>
+                        <ul class="space-y-2">
+                            <li class="flex">
+                                <span class="font-mono bg-gray-200 px-2 mr-2">↑/↓</span>
+                                <span>Navigasi menu</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-mono bg-gray-200 px-2 mr-2">Enter</span>
+                                <span>Pilih opsi</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-mono bg-gray-200 px-2 mr-2">q</span>
+                                <span>Berhenti memutar</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="brutal-card bg-gray-100 p-4">
+                        <h4 class="font-bold mb-2">Poster Controls</h4>
+                        <ul class="space-y-2">
+                            <li class="flex">
+                                <span class="font-mono bg-gray-200 px-2 mr-2">Space</span>
+                                <span>Play/Pause</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-mono bg-gray-200 px-2 mr-2">→</span>
+                                <span>Forward 10s</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-mono bg-gray-200 px-2 mr-2">←</span>
+                                <span>Backward 10s</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contribution -->
+    <section id="contribute" class="py-12 px-4 md:px-8 bg-brutalGreen"
+        style="border-top: 3px solid #000; border-bottom: 3px solid #000;">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">
+                <span class="bg-white text-brutalGreen px-4 py-2" style="border: 3px solid #000;">KONTRIBUSI</span>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="brutal-card bg-white p-6 shadow-brutal">
+                    <h3 class="text-2xl font-bold mb-4">Cara Berkontribusi</h3>
+                    <ul class="space-y-4">
+                        <li>
+                            <div class="flex items-start">
+                                <div
+                                    class="bg-brutalGreen text-white w-8 h-8 flex items-center justify-center flex-shrink-0 mr-3">
+                                    1</div>
+                                <div>
+                                    <h4 class="font-bold">Laporkan Issue</h4>
+                                    <p>Beri tahu bug atau masalah yang Anda temukan di GitHub Issues</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-start">
+                                <div
+                                    class="bg-brutalGreen text-white w-8 h-8 flex items-center justify-center flex-shrink-0 mr-3">
+                                    2</div>
+                                <div>
+                                    <h4 class="font-bold">Ajukan Fitur</h4>
+                                    <p>Sarankan ide fitur baru di Discussion GitHub</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-start">
+                                <div
+                                    class="bg-brutalGreen text-white w-8 h-8 flex items-center justify-center flex-shrink-0 mr-3">
+                                    3</div>
+                                <div>
+                                    <h4 class="font-bold">Kirim Pull Request</h4>
+                                    <p>Perbaiki bug atau tambahkan fitur melalui pull request</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-start">
+                                <div
+                                    class="bg-brutalGreen text-white w-8 h-8 flex items-center justify-center flex-shrink-0 mr-3">
+                                    4</div>
+                                <div>
+                                    <h4 class="font-bold">Bantu Dokumentasi</h4>
+                                    <p>Perbaiki atau tingkatkan dokumentasi proyek</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <div class="brutal-card bg-white p-6 shadow-brutal mb-6">
+                        <h3 class="text-2xl font-bold mb-4">Lisensi</h3>
+                        <p class="mb-4">
+                            RyoNime dilisensikan di bawah <strong>GPL-3.0 License</strong>.
+                            Anda bebas menggunakan, memodifikasi, dan mendistribusikan ulang.
+                        </p>
+                        <div class="terminal bg-dark p-4 text-sm">
+                            # Persyaratan Lisensi<br>
+                            - Sertakan pemberitahuan hak cipta<br>
+                            - Sertakan salinan lisensi<br>
+                            - Dokumentasikan perubahan besar<br>
+                            - Kode modifikasi harus open source
+                        </div>
+                    </div>
+
+                    <a href="https://github.com/budi-imam-prasetyo/ryonime" target="_blank"
+                        class="btn-brutal bg-dark text-white px-6 py-3 font-bold text-lg w-full text-center">
+                        <i class="fab fa-github mr-2"></i> Kunjungi GitHub Repository
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-4 md:px-8 bg-dark text-white" style="border-top: 3px solid #000;">
+        <div class="container mx-auto max-w-6xl">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">RYONIME</h3>
+                    <p>CLI untuk streaming anime sub Indo tanpa iklan. Gratis dan open source.</p>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-4">TAUTAN</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="hover:text-brutalRed">Fitur</a></li>
+                        <li><a href="#install" class="hover:text-brutalRed">Instalasi</a></li>
+                        <li><a href="#update" class="hover:text-brutalRed">Update</a></li>
+                        <li><a href="#contribute" class="hover:text-brutalRed">Kontribusi</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-4">KONTAK</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center">
+                            <i class="fab fa-github mr-2"></i>
+                            <a href="https://github.com/budi-imam-prasetyo/ryonime" target="_blank"
+                                class="hover:text-brutalRed">GitHub Repository</a>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-bug mr-2"></i>
+                            <a href="https://github.com/budi-imam-prasetyo/ryonime/issues" target="_blank"
+                                class="hover:text-brutalRed">Laporkan Issue</a>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2"></i>
+                            <span>budiimamprsty@gmail.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center">
+                <p>© 2025 RyoNime - Anime Gratis, Bahagia Tanpa Iklan!</p>
+                <p class="text-sm mt-2">Projek ini tidak berafiliasi dengan Muse Indonesia. Hanya untuk tujuan edukasi.
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
